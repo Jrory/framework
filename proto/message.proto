@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+package MessagePb;
+
+// 通用消息头
+message MessageHeader {
+  uint32 version = 1;          // 协议版本
+  uint32 service_id = 2;       // 服务ID
+  uint32 command_id = 3;       // 命令ID
+  uint32 sequence = 4;         // 序列号
+  uint32 status = 5;           // 状态码(0-成功,其他-错误码)
+  uint32 body_length = 6;      // 消息体长度
+  uint32 flags = 7;            // 标志位(0x1-需要ACK,0x2-压缩,0x4-加密)
+  uint64 timestamp = 8;        // 时间戳(毫秒)
+}
+
+// 通用消息体
+message MessageBody {
+  bytes content = 1;           // 实际内容
+  string checksum = 2;         // 校验和(可选)
+}
+
+// 完整的网络消息
+message NetMessage {
+  MessageHeader header = 1;
+  MessageBody body = 2;
+}
+
+// 心跳消息
+message Heartbeat {
+  uint64 send_time = 1;        // 发送时间戳
+  uint32 ping_interval = 2;    // 心跳间隔(秒)
+}
+
+// ACK消息
+message AckMessage {
+  uint32 sequence = 1;         // 确认的序列号
+  uint32 status = 2;           // 状态码
+}
+
+// 流量控制消息
+message FlowControl {
+  uint32 window_size = 1;      // 窗口大小
+  uint32 rate_limit = 2;       // 速率限制(字节/秒)
+}
+
+// 示例: 登录请求
+message LoginRequest {
+  string username = 1;
+  string password = 2;
+  string client_version = 3;   // 客户端版本
+  string device_id = 4;        // 设备ID
+}
+
+// 示例: 登录响应
+message LoginResponse {
+  int32 result_code = 1;
+  string result_msg = 2;
+  string session_id = 3;
+  uint32 heartbeat_interval = 4; // 心跳间隔(秒)
+}

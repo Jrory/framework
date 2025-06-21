@@ -112,6 +112,9 @@ class EventLoop : noncopyable
       abortNotInLoopThread();
     }
   }
+
+  const pid_t getThreadId() { return threadId_; }
+  //
   bool isInLoopThread() const { return threadId_ == CurrentThread::tid(); }
   // bool callingPendingFunctors() const { return callingPendingFunctors_; }
   bool eventHandling() const { return eventHandling_; }

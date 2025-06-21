@@ -37,6 +37,8 @@ class TimerId : public common::copyable
   {
   }
 
+ bool isValid() const { return timer_ != NULL; }
+
   // default copy-ctor, dtor and assignment are okay
 
   friend class TimerQueue;
